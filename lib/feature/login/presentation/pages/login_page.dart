@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:personal_expenses/core/constants/app_routes.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -38,7 +39,12 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(height: 19),
             ElevatedButton(onPressed: () {}, child: Text('Iniciar sesión')),
-            TextButton(onPressed: () {}, child: Text('Registrarse')),
+            TextButton(
+              child: Text('Registrarse'),
+              onPressed: () {
+                Navigator.pushNamed(context, AppRoutes.newUser);
+              },
+            ),
           ],
         ),
       ),
