@@ -1,9 +1,9 @@
 const List<String> schemas = [
   ''' CREATE TABLE Users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
-    email TEXT,
-    password TEXT,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE,
+    password TEXT NOT NULL,
     currency TEXT DEFAULT "BOB",
     createdAt TEXT NOT NULL,
     updatedAt TEXT NOT NULL
