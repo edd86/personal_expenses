@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:personal_expenses/core/constants/app_routes.dart';
+import 'package:personal_expenses/core/constants/global_widgets.dart';
+import 'package:personal_expenses/feature/login/data/repository/login_repo_impl.dart';
+import 'package:personal_expenses/feature/login/domain/model/user_login.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,11 +14,16 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool isObscure = true;
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(
+          vertical: size.height * .05,
+          horizontal: size.width * .1,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -32,13 +40,55 @@ class _LoginPageState extends State<LoginPage> {
               width: 250,
               child: Column(
                 children: [
-                  TextField(controller: _emailController),
-                  TextField(controller: _passwordController),
+                  TextField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      label: Text('Correo electrónico'),
+                    ),
+                  ),
+                  TextField(
+                    controller: _passwordController,
+                    obscureText: isObscure,
+                    decoration: InputDecoration(
+                      label: Text('Contraseña'),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          isObscure ? Icons.visibility : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            isObscure = !isObscure;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
             SizedBox(height: 19),
-            ElevatedButton(onPressed: () {}, child: Text('Iniciar sesión')),
+            ElevatedButton(
+              onPressed: () async {
+                if (_emailController.text.isNotEmpty &&
+                    _passwordController.text.isNotEmpty) {
+                  final userLogin = UserLogin(
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                  );
+                  final flag = await LoginRepoImpl().isUserRegistered(
+                    userLogin,
+                  );
+                  if (flag) {
+                    _nextPage();
+                  } else {
+                    _showMessage('El usuario no esta registrado');
+                  }
+                } else {
+                  _showMessage('Llene todos los campos por favor.');
+                }
+              },
+              child: Text('Iniciar sesión'),
+            ),
             TextButton(
               child: Text('Registrarse'),
               onPressed: () {
@@ -49,5 +99,15 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(GlobalWidgets().snackMessage(context, message));
+  }
+
+  void _nextPage() {
+    Navigator.pushNamed(context, '/home');
   }
 }

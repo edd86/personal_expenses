@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:personal_expenses/core/constants/global_widgets.dart';
+import 'package:personal_expenses/feature/user_account/data/repository/user_account_repo_impl.dart';
+import 'package:personal_expenses/feature/user_account/domain/model/new_user.dart';
 import 'package:personal_expenses/feature/user_account/presentation/widgets/custom_label_widget.dart';
 
 class NewUserForm extends StatefulWidget {
@@ -76,16 +79,31 @@ class _NewUserFormState extends State<NewUserForm> {
                   if (value == null || value.isEmpty) {
                     return 'Por favor escriba su contraseña';
                   }
+                  if (value.length < 8) {
+                    return 'La contraseña debe tener mínimo 8 caracteres.';
+                  }
                   return null;
                 },
               ),
               spacer,
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formkey.currentState!.validate()) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text('Todo OK')));
+                    final newUser = NewUser(
+                      name: _nameController.text,
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                      currency: "BOB",
+                    );
+                    final response = await UserAccountRepoImpl().registerUser(
+                      newUser,
+                    );
+                    if (response) {
+                      _showMessage('El usuario se registro');
+                      _backPage();
+                    } else {
+                      _showMessage('El usuario no se registro');
+                    }
                   }
                 },
                 child: Text('Guardar'),
@@ -95,5 +113,15 @@ class _NewUserFormState extends State<NewUserForm> {
         ),
       ),
     );
+  }
+
+  _showMessage(String message) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(GlobalWidgets().snackMessage(context, message));
+  }
+
+  void _backPage() {
+    Navigator.pop(context);
   }
 }
