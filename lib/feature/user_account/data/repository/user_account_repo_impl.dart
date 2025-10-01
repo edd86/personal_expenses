@@ -19,4 +19,10 @@ class UserAccountRepoImpl implements UserAccountRepo {
     }
     return false;
   }
+  
+  @override
+  Future<NewUser> getUser(int id) {
+    // TODO: implement getUser
+    throw UnimplementedError();
+  }
 }
