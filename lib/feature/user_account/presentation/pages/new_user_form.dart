@@ -86,27 +86,30 @@ class _NewUserFormState extends State<NewUserForm> {
                 },
               ),
               spacer,
-              ElevatedButton(
-                onPressed: () async {
-                  if (_formkey.currentState!.validate()) {
-                    final newUser = NewUser(
-                      name: _nameController.text,
-                      email: _emailController.text,
-                      password: _passwordController.text,
-                      currency: "BOB",
-                    );
-                    final response = await UserAccountRepoImpl().registerUser(
-                      newUser,
-                    );
-                    if (response) {
-                      _showMessage('El usuario se registro');
-                      _backPage();
-                    } else {
-                      _showMessage('El usuario no se registro');
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    if (_formkey.currentState!.validate()) {
+                      final newUser = NewUser(
+                        name: _nameController.text,
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                        currency: "BOB",
+                      );
+                      final response = await UserAccountRepoImpl().registerUser(
+                        newUser,
+                      );
+                      if (response) {
+                        _showMessage('El usuario se registro');
+                        _backPage();
+                      } else {
+                        _showMessage('El usuario no se registro');
+                      }
                     }
-                  }
-                },
-                child: Text('Guardar'),
+                  },
+                  child: Text('Guardar'),
+                ),
               ),
             ],
           ),
