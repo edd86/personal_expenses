@@ -22,22 +22,24 @@ class _LoginPageState extends State<LoginPage> {
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
           vertical: size.height * .05,
-          horizontal: size.width * .1,
+          horizontal: size.width * .075,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(height: size.height * .25),
             Text(
-              'Bienvenido',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32),
+              'Bienvenido de nuevo',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
             ),
-            Image.asset('assets/images/man.png', height: 280),
             Text(
-              'Para poder controlar de una forma eficiente tus gastos, necesitas crearte una cuenta de usuario e iniciar sesión',
+              'Inicia sesión para continuar con tu control de gastos',
               textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 15.5, color: Colors.black54),
             ),
+            SizedBox(height: size.height * .025),
             SizedBox(
-              width: 250,
+              width: double.infinity,
               child: Column(
                 children: [
                   TextField(
@@ -67,33 +69,56 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             SizedBox(height: 19),
-            ElevatedButton(
-              onPressed: () async {
-                if (_emailController.text.isNotEmpty &&
-                    _passwordController.text.isNotEmpty) {
-                  final userLogin = UserLogin(
-                    email: _emailController.text,
-                    password: _passwordController.text,
-                  );
-                  final flag = await LoginRepoImpl().isUserRegistered(
-                    userLogin,
-                  );
-                  if (flag) {
-                    _nextPage();
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(Colors.blueAccent),
+                  foregroundColor: WidgetStatePropertyAll(Colors.white),
+                ),
+                onPressed: () async {
+                  if (_emailController.text.isNotEmpty &&
+                      _passwordController.text.isNotEmpty) {
+                    final userLogin = UserLogin(
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                    );
+                    final flag = await LoginRepoImpl().isUserRegistered(
+                      userLogin,
+                    );
+                    if (flag) {
+                      _nextPage();
+                    } else {
+                      _showMessage('El usuario no esta registrado');
+                    }
                   } else {
-                    _showMessage('El usuario no esta registrado');
+                    _showMessage('Llene todos los campos por favor.');
                   }
-                } else {
-                  _showMessage('Llene todos los campos por favor.');
-                }
-              },
-              child: Text('Iniciar sesión'),
+                },
+                child: Text('Iniciar sesión'),
+              ),
             ),
             TextButton(
-              child: Text('Registrarse'),
-              onPressed: () {
-                Navigator.pushNamed(context, AppRoutes.newUser);
-              },
+              onPressed: () {},
+              child: Text(
+                'Olvidaste tu contraseña?',
+                style: TextStyle(color: Colors.blueAccent),
+              ),
+            ),
+            SizedBox(height: size.height * .2),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(
+                    Colors.lightBlueAccent[100],
+                  ),
+                  foregroundColor: WidgetStatePropertyAll(Colors.blueAccent),
+                ),
+                onPressed: () =>
+                    Navigator.pushNamed(context, AppRoutes.newUser),
+                child: Text('Registrarse'),
+              ),
             ),
           ],
         ),
@@ -108,6 +133,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _nextPage() {
-    Navigator.pushNamed(context, '/home');
+    Navigator.pushNamed(context, '/navBar');
   }
 }
