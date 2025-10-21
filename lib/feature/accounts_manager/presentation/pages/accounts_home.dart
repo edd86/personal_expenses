@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:personal_expenses/feature/accounts_manager/presentation/widgets/dialog_add_account.dart';
 
 class AccountsHome extends StatefulWidget {
   const AccountsHome({super.key});
@@ -56,7 +57,7 @@ class _AccountsHomeState extends State<AccountsHome> {
                             ),
                           ),
                           onPressed: () {
-                            //TODO: Programar el registro de cuentas.
+                            _showDialogAddAccount();
                           },
                           child: Text('Agregar cuenta'),
                         ),
@@ -87,5 +88,9 @@ class _AccountsHomeState extends State<AccountsHome> {
         ),
       ),
     );
+  }
+
+  void _showDialogAddAccount() {
+    showDialog(context: context, builder: (context) => DialogAddAccount());
   }
 }
