@@ -1,4 +1,8 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:personal_expenses/core/constants/enum_color.dart';
+import 'package:personal_expenses/core/constants/enum_icons.dart';
 
 class DialogAddAccount extends StatefulWidget {
   const DialogAddAccount({super.key});
@@ -19,17 +23,9 @@ class _DialogAddAccountState extends State<DialogAddAccount> {
     'Efectivo',
     'Inversiones',
   ];
-  final List<Color> _colors = [
-    Colors.red,
-    Colors.blue,
-    Colors.green,
-    Colors.orange,
-    Colors.purple,
-    Colors.yellow,
-    Colors.cyan,
-    Colors.pink,
-  ];
-  Color? _selectedColor;
+
+  EnumColors _colorSelected = EnumColors.skyBlue;
+  EnumIcons _iconSelected = EnumIcons.bank;
 
   @override
   Widget build(BuildContext context) {
@@ -70,31 +66,84 @@ class _DialogAddAccountState extends State<DialogAddAccount> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Wrap(
-                    spacing: 8.75,
-                    children: _colors
-                        .map(
-                          (color) => GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _selectedColor = color;
-                              });
-                            },
-                            child: Container(
-                              width: 18.5,
-                              height: 18.5,
-                              decoration: BoxDecoration(
-                                color: color,
-                                shape: BoxShape.circle,
-                                border: _selectedColor == color
-                                    ? Border.all(color: Colors.black, width: 2)
-                                    : null,
-                              ),
-                            ),
+                    spacing: 25.75,
+                    children: EnumColors.values.map((enumColor) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _colorSelected = enumColor;
+                          });
+                        },
+                        child: Container(
+                          width: 20.5,
+                          height: 20.5,
+                          decoration: BoxDecoration(
+                            color: enumColor.color,
+                            shape: BoxShape.circle,
+                            border: _colorSelected == enumColor
+                                ? Border.all(color: Colors.black, width: 2)
+                                : null,
                           ),
-                        )
-                        .toList(),
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ],
+              ),
+              SizedBox(height: 15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Wrap(
+                    spacing: 20.5,
+                    children: EnumIcons.values.map((enumIcon) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _iconSelected = enumIcon;
+                          });
+                        },
+                        child: Container(
+                          width: 36,
+                          height: 36,
+                          decoration: BoxDecoration(
+                            color: _iconSelected == enumIcon
+                                ? _colorSelected.color.withAlpha(80)
+                                : Colors.transparent,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: SvgPicture.asset(
+                              enumIcon.path,
+                              height: 20,
+                              width: 20,
+                              colorFilter: _iconSelected == enumIcon
+                                  ? ColorFilter.mode(
+                                      _colorSelected.color,
+                                      BlendMode.srcIn,
+                                    )
+                                  : null,
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+              SizedBox(height: 15),
+              ElevatedButton.icon(
+                style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(Colors.blueAccent),
+                  foregroundColor: WidgetStatePropertyAll(Colors.blueAccent),
+                ),
+                onPressed: () {},
+                label: Text(
+                  'Registrar cuenta',
+                  style: TextStyle(color: Colors.white),
+                ),
+                icon: Icon(Icons.save, color: Colors.white),
               ),
             ],
           ),
