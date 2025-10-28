@@ -1,3 +1,6 @@
+import 'package:flutter/widgets.dart';
+import 'package:personal_expenses/core/constants/enum_color.dart';
+
 class AccountsModel {
   final int? id;
   final String name;
@@ -5,7 +8,7 @@ class AccountsModel {
   final double balance;
   final String currency;
   final String icon;
-  final String color;
+  final Color color;
   final bool isActive;
   final int userId;
   final DateTime createdAt = DateTime.now();
@@ -31,9 +34,9 @@ class AccountsModel {
       balance: map['balance'],
       currency: map['currency'],
       icon: map['icon'],
-      color: map['color'],
+      color: EnumColors.hexToColor(map['color']),
       isActive: map['isActive'] == 1 ? true : false,
-      userId: map['userId']
+      userId: map['userId'],
     );
   }
 
@@ -45,9 +48,9 @@ class AccountsModel {
       'balance': balance,
       'currency': currency,
       'icon': icon,
-      'color': color,
+      'color': color.toString().toUpperCase().replaceAll('#', ''),
       'isActive': isActive ? 1 : 0,
-      'userId': userId
+      'userId': userId,
     };
   }
 
@@ -58,7 +61,7 @@ class AccountsModel {
     double? balance,
     String? currency,
     String? icon,
-    String? color,
+    Color? color,
     bool? isActive,
     int? userId,
   }) {
@@ -71,7 +74,7 @@ class AccountsModel {
       icon: icon ?? this.icon,
       color: color ?? this.color,
       isActive: isActive ?? this.isActive,
-      userId: userId ?? this.userId
+      userId: userId ?? this.userId,
     );
   }
 }

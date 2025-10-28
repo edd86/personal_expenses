@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+
 class AccountsEntity {
   final int? id;
   final String name;
@@ -5,7 +7,7 @@ class AccountsEntity {
   final double balance;
   final String currency;
   final String icon;
-  final String color;
+  final Color  color;
   final bool isActive;
   final int userId;
 
@@ -18,6 +20,6 @@ class AccountsEntity {
     required this.icon,
     required this.color,
     this.isActive = true,
-    required this.userId
+    required this.userId,
   });
 }
