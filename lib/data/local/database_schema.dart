@@ -1,9 +1,9 @@
 const List<String> schemas = [
   ''' CREATE TABLE Users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
-    email TEXT,
-    password TEXT,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE,
+    password TEXT NOT NULL,
     currency TEXT DEFAULT "BOB",
     createdAt TEXT NOT NULL,
     updatedAt TEXT NOT NULL
@@ -14,6 +14,8 @@ const List<String> schemas = [
     accountType TEXT NOT NULL CHECK(accountType IN ('checking','saving','credit_card','cash','investment')),
     balance REAL DEFAULT 0.0,
     currency TEXT DEFAULT "BOB",
+    icon TEXT NOT NULL,
+    color TEXT NOT NULL DEFAULT 'FF14b6eb',
     isActive BOOLEAN DEFAULT 1,
     createdAt TEXT NOT NULL,
     updatedAt TEXT NOT NULL,
@@ -24,7 +26,7 @@ const List<String> schemas = [
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     categoryType TEXT NOT NULL CHECK(categoryType IN ('expense','income')),
-    color TEXT DEFAULT '#007AFF',
+    color TEXT DEFAULT 'FF14b6eb',
     icon TEXT DEFAULT 'other',
     isActive BOOLEAN DEFAULT 1,
     createdAt TEXT NOT NULL,
