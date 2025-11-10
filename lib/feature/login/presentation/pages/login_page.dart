@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:personal_expenses/core/constants/app_routes.dart';
+import 'package:personal_expenses/core/constants/constants_app.dart';
+import 'package:personal_expenses/core/constants/data_response.dart';
 import 'package:personal_expenses/core/constants/global_widgets.dart';
 import 'package:personal_expenses/feature/login/data/repository/login_repo_impl.dart';
 import 'package:personal_expenses/feature/login/domain/model/user_login.dart';
@@ -83,16 +85,18 @@ class _LoginPageState extends State<LoginPage> {
                       email: _emailController.text,
                       password: _passwordController.text,
                     );
-                    final flag = await LoginRepoImpl().isUserRegistered(
+                    final res = await LoginRepoImpl().isUserRegistered(
                       userLogin,
                     );
-                    if (flag) {
+                    if (res.success) {
+                      userLoged = res.data!;
+                      _showMessage(res);
                       _nextPage();
-                    } else {
-                      _showMessage('El usuario no esta registrado');
                     }
                   } else {
-                    _showMessage('Llene todos los campos por favor.');
+                    _showMessage(
+                      DataResponse.error('Complete los campos, por favor'),
+                    );
                   }
                 },
                 child: Text('Iniciar sesión'),
@@ -115,9 +119,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   foregroundColor: WidgetStatePropertyAll(Colors.blueAccent),
                 ),
+                child: Text('Registrarse'),
                 onPressed: () =>
                     Navigator.pushNamed(context, AppRoutes.newUser),
-                child: Text('Registrarse'),
               ),
             ),
           ],
@@ -126,13 +130,19 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _showMessage(String message) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(GlobalWidgets().snackMessage(context, message));
-  }
-
   void _nextPage() {
     Navigator.pushNamed(context, '/navBar');
+  }
+
+  void _showMessage(DataResponse<UserLogin> res) {
+    if (res.success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        GlobalWidgets.snackMessage(context, 'Bienvenido ${res.message}'),
+      );
+    } else {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(GlobalWidgets.snackMessage(context, res.message));
+    }
   }
 }

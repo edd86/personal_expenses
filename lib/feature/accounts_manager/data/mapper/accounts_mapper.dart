@@ -1,9 +1,9 @@
 import 'package:personal_expenses/feature/accounts_manager/data/model/accounts_model.dart';
-import 'package:personal_expenses/feature/accounts_manager/domain/entity/accounts_entity.dart';
+import 'package:personal_expenses/feature/accounts_manager/domain/entity/account_entity.dart';
 
 class AccountsMapper {
-  static AccountsEntity toEntity(AccountsModel model) {
-    return AccountsEntity(
+  static AccountEntity toEntity(AccountModel model) {
+    return AccountEntity(
       id: model.id,
       name: model.name,
       accountType: model.accountType,
@@ -16,8 +16,8 @@ class AccountsMapper {
     );
   }
 
-  static AccountsModel toModel(AccountsEntity entity) {
-    return AccountsModel(
+  static AccountModel toModel(AccountEntity entity) {
+    return AccountModel(
       id: entity.id,
       name: entity.name,
       accountType: entity.accountType,

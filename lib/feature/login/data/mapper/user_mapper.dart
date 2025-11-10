@@ -5,6 +5,7 @@ class UserMapper {
   static UserLoginModel toModel(UserLogin entity) {
     return UserLoginModel(
       id: entity.id,
+      name: entity.name,
       email: entity.email,
       password: entity.password,
     );
@@ -13,6 +14,7 @@ class UserMapper {
   static UserLogin toEntity(UserLoginModel model) {
     return UserLogin(
       id: model.id,
+      name: model.name,
       email: model.email,
       password: model.password,
     );

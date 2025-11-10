@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:personal_expenses/core/constants/constants_app.dart';
 import 'package:personal_expenses/core/constants/enum_color.dart';
 import 'package:personal_expenses/core/constants/enum_icons.dart';
+import 'package:personal_expenses/feature/accounts_manager/domain/entity/account_entity.dart';
 
 class DialogAddAccount extends StatefulWidget {
   const DialogAddAccount({super.key});
@@ -41,6 +42,12 @@ class _DialogAddAccountState extends State<DialogAddAccount> {
               TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(label: Text('Nombre')),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Ingrese el nombre de cuenta';
+                  }
+                  return null;
+                },
               ),
               DropdownButton(
                 value: _dropDownValue,
@@ -60,6 +67,16 @@ class _DialogAddAccountState extends State<DialogAddAccount> {
               TextFormField(
                 controller: _initialBalanceController,
                 decoration: InputDecoration(label: Text('Balance actual')),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Ingrese el balance actual';
+                  }
+                  final amount = double.tryParse(value);
+                  if (amount == null) {
+                    return 'Ingrese un monto válido';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 15),
               Row(
@@ -91,12 +108,13 @@ class _DialogAddAccountState extends State<DialogAddAccount> {
                 ],
               ),
               SizedBox(height: 15),
+              //Image.asset('assets/images/man.png', height: 50, width: 50),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Wrap(
-                    spacing: 20.5,
+                    spacing: 10.5,
                     children: EnumIcons.values.map((enumIcon) {
                       return GestureDetector(
                         onTap: () {
@@ -105,8 +123,8 @@ class _DialogAddAccountState extends State<DialogAddAccount> {
                           });
                         },
                         child: Container(
-                          width: 36,
-                          height: 36,
+                          width: 30,
+                          height: 30,
                           decoration: BoxDecoration(
                             color: _iconSelected == enumIcon
                                 ? _colorSelected.color.withAlpha(80)
@@ -115,7 +133,7 @@ class _DialogAddAccountState extends State<DialogAddAccount> {
                           ),
                           child: Center(
                             child: SvgPicture.asset(
-                              enumIcon.path,
+                              'assets/images/${enumIcon.path}',
                               height: 20,
                               width: 20,
                               colorFilter: _iconSelected == enumIcon
@@ -133,17 +151,38 @@ class _DialogAddAccountState extends State<DialogAddAccount> {
                 ],
               ),
               SizedBox(height: 15),
-              ElevatedButton.icon(
-                style: ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(Colors.blueAccent),
-                  foregroundColor: WidgetStatePropertyAll(Colors.blueAccent),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(Colors.blueAccent),
+                    foregroundColor: WidgetStatePropertyAll(Colors.blueAccent),
+                  ),
+                  label: Text(
+                    'Registrar cuenta',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  icon: Icon(Icons.save, color: Colors.white),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      if (_dropDownValue == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Seleccione un tipo de cuenta'),
+                          ),
+                        );
+                      }
+                      final newAccount = AccountEntity(
+                        name: _nameController.text,
+                        accountType: _dropDownValue!,
+                        icon: _iconSelected.path,
+                        color: _colorSelected.color,
+                        balance: double.parse(_initialBalanceController.text),
+                        userId: userLoged!.id!,
+                      );
+                    }
+                  },
                 ),
-                onPressed: () {},
-                label: Text(
-                  'Registrar cuenta',
-                  style: TextStyle(color: Colors.white),
-                ),
-                icon: Icon(Icons.save, color: Colors.white),
               ),
             ],
           ),

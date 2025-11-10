@@ -118,10 +118,10 @@ class _NewUserFormState extends State<NewUserForm> {
     );
   }
 
-  _showMessage(String message) {
+  void _showMessage(String message) {
     ScaffoldMessenger.of(
       context,
-    ).showSnackBar(GlobalWidgets().snackMessage(context, message));
+    ).showSnackBar(GlobalWidgets.snackMessage(context, message));
   }
 
   void _backPage() {

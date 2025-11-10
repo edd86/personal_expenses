@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-class AccountsEntity {
+class AccountEntity {
   final int? id;
   final String name;
   final String accountType;
@@ -11,7 +11,7 @@ class AccountsEntity {
   final bool isActive;
   final int userId;
 
-  AccountsEntity({
+  AccountEntity({
     this.id,
     required this.name,
     required this.accountType,

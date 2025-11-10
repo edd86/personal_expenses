@@ -1,5 +1,5 @@
-import 'package:personal_expenses/feature/accounts_manager/data/model/accounts_model.dart';
+import 'package:personal_expenses/feature/accounts_manager/domain/entity/account_entity.dart';
 
 abstract class AccountsManagerRepo {
-  Future<bool> createAccount(AccountsModel accountModel);
+  Future<bool> createAccount(AccountEntity accountEntity);
 }

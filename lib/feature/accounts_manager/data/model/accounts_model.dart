@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:personal_expenses/core/constants/enum_color.dart';
 
-class AccountsModel {
+class AccountModel {
   final int? id;
   final String name;
   final String accountType;
@@ -14,7 +14,7 @@ class AccountsModel {
   final DateTime createdAt = DateTime.now();
   final DateTime updatedAt = DateTime.now();
 
-  AccountsModel({
+  AccountModel({
     this.id,
     required this.name,
     required this.accountType,
@@ -26,8 +26,8 @@ class AccountsModel {
     required this.userId,
   });
 
-  factory AccountsModel.fromMap(Map<String, dynamic> map) {
-    return AccountsModel(
+  factory AccountModel.fromMap(Map<String, dynamic> map) {
+    return AccountModel(
       id: map['id'],
       name: map['name'],
       accountType: map['accountType'],
@@ -54,7 +54,7 @@ class AccountsModel {
     };
   }
 
-  AccountsModel copyWith({
+  AccountModel copyWith({
     int? id,
     String? name,
     String? accountType,
@@ -65,7 +65,7 @@ class AccountsModel {
     bool? isActive,
     int? userId,
   }) {
-    return AccountsModel(
+    return AccountModel(
       id: id ?? this.id,
       name: name ?? this.name,
       accountType: accountType ?? this.accountType,
