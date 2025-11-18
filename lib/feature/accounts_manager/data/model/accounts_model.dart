@@ -11,8 +11,8 @@ class AccountModel {
   final Color color;
   final bool isActive;
   final int userId;
-  final DateTime createdAt = DateTime.now();
-  final DateTime updatedAt = DateTime.now();
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   AccountModel({
     this.id,
@@ -24,19 +24,24 @@ class AccountModel {
     required this.color,
     required this.isActive,
     required this.userId,
-  });
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) : createdAt = createdAt ?? DateTime.now(),
+       updatedAt = updatedAt ?? DateTime.now();
 
   factory AccountModel.fromMap(Map<String, dynamic> map) {
     return AccountModel(
       id: map['id'],
       name: map['name'],
-      accountType: map['accountType'],
+      accountType: _translateAccountTypeToSpanish(map['accountType']),
       balance: map['balance'],
       currency: map['currency'],
       icon: map['icon'],
-      color: EnumColors.hexToColor(map['color']),
+      color: _colorFromEnumName(map['color']),
       isActive: map['isActive'] == 1 ? true : false,
       userId: map['userId'],
+      createdAt: DateTime.parse(map['createdAt']),
+      updatedAt: DateTime.parse(map['updatedAt']),
     );
   }
 
@@ -44,13 +49,15 @@ class AccountModel {
     return {
       'id': id,
       'name': name,
-      'accountType': accountType,
+      'accountType': _translateAccountTypeToEnglish(accountType),
       'balance': balance,
       'currency': currency,
       'icon': icon,
-      'color': color.toString().toUpperCase().replaceAll('#', ''),
+      'color': _enumNameFromColor(color),
       'isActive': isActive ? 1 : 0,
       'userId': userId,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
     };
   }
 
@@ -64,6 +71,8 @@ class AccountModel {
     Color? color,
     bool? isActive,
     int? userId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) {
     return AccountModel(
       id: id ?? this.id,
@@ -75,6 +84,57 @@ class AccountModel {
       color: color ?? this.color,
       isActive: isActive ?? this.isActive,
       userId: userId ?? this.userId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
+  }
+
+  //Función auxiliar para trabajar con el enum
+  String _enumNameFromColor(Color color) {
+    return EnumColors.values
+        .firstWhere((c) => c.color.toARGB32() == color.toARGB32())
+        .name;
+  }
+
+  static Color _colorFromEnumName(String name) {
+    try {
+      return EnumColors.values.firstWhere((c) => c.name == name).color;
+    } catch (e) {
+      return EnumColors.skyBlue.color;
+    }
+  }
+
+  String _translateAccountTypeToEnglish(String accountType) {
+    switch (accountType) {
+      case 'Cuenta Bancaria':
+        return 'checking';
+      case 'Ahorro':
+        return 'saving';
+      case 'Tarjeta de Crédito':
+        return 'credit_card';
+      case 'Efectivo':
+        return 'cash';
+      case 'Inversiones':
+        return 'investment';
+      default:
+        return '';
+    }
+  }
+
+  static String _translateAccountTypeToSpanish(String accountType) {
+    switch (accountType) {
+      case 'checking':
+        return 'Cuenta Bancaria';
+      case 'saving':
+        return 'Ahorro';
+      case 'credit_card':
+        return 'Tarjeta de Crédito';
+      case 'cash':
+        return 'Efectivo';
+      case 'investment':
+        return 'Inversiones';
+      default:
+        return '';
+    }
   }
 }

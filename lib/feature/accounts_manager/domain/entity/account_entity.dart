@@ -1,3 +1,4 @@
+
 import 'package:flutter/widgets.dart';
 
 class AccountEntity {
@@ -7,9 +8,11 @@ class AccountEntity {
   final double balance;
   final String currency;
   final String icon;
-  final Color  color;
+  final Color color;
   final bool isActive;
   final int userId;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   AccountEntity({
     this.id,
@@ -21,5 +24,7 @@ class AccountEntity {
     required this.color,
     this.isActive = true,
     required this.userId,
+    this.createdAt,
+    this.updatedAt,
   });
 }
