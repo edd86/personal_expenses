@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:personal_expenses/feature/accounts_manager/presentation/provider/list_accounts_provider.dart';
+import 'package:personal_expenses/feature/accounts_manager/presentation/widgets/account_tile.dart';
 import 'package:personal_expenses/feature/accounts_manager/presentation/widgets/dialog_add_account.dart';
+import 'package:provider/provider.dart';
 
 class AccountsHome extends StatefulWidget {
   const AccountsHome({super.key});
@@ -12,24 +15,55 @@ class _AccountsHomeState extends State<AccountsHome> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final prov = Provider.of<ListAccountsProvider>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        automaticallyImplyLeading: false,
         title: Text('Cuentas', style: TextStyle(fontWeight: FontWeight.bold)),
       ),
-      body: SingleChildScrollView(
+      body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Tus Cuentas',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.7),
+            Consumer<ListAccountsProvider>(
+              builder: (context, provider, child) {
+                final accountsResponse = provider.accountsResponse;
+                if (!accountsResponse.success) {
+                  return Center(child: Text(accountsResponse.message));
+                }
+                if (accountsResponse.data!.isEmpty) {
+                  return Center(child: Text(accountsResponse.message));
+                }
+                final accounts = accountsResponse.data;
+                return Column(
+                  children: [
+                    Text(
+                      'Tus Cuentas',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.7,
+                      ),
+                    ),
+                    ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: accounts!.length,
+                      itemBuilder: (context, index) {
+                        final account = accounts[index];
+                        return AccountTile(account: account);
+                      },
+                    ),
+                  ],
+                );
+              },
             ),
+            /* 
             SizedBox(height: 300),
-            //Expanded(child: ListView()),
+            //Expanded(child: ListView()), */
             SizedBox(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
