@@ -3,7 +3,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:personal_expenses/core/constants/constants_app.dart';
 import 'package:personal_expenses/core/constants/enum_color.dart';
 import 'package:personal_expenses/core/constants/enum_icons.dart';
+import 'package:personal_expenses/core/constants/global_widgets.dart';
+import 'package:personal_expenses/feature/accounts_manager/data/repo/accounts_manager_repo_impl.dart';
 import 'package:personal_expenses/feature/accounts_manager/domain/entity/account_entity.dart';
+import 'package:personal_expenses/feature/accounts_manager/presentation/provider/list_accounts_provider.dart';
+import 'package:provider/provider.dart';
 
 class DialogAddAccount extends StatefulWidget {
   const DialogAddAccount({super.key});
@@ -30,6 +34,7 @@ class _DialogAddAccountState extends State<DialogAddAccount> {
 
   @override
   Widget build(BuildContext context) {
+    final accountProvider = Provider.of<ListAccountsProvider>(context);
     return AlertDialog(
       title: Text('Agregar Cuenta'),
       content: SingleChildScrollView(
@@ -163,7 +168,7 @@ class _DialogAddAccountState extends State<DialogAddAccount> {
                     style: TextStyle(color: Colors.white),
                   ),
                   icon: Icon(Icons.save, color: Colors.white),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       if (_dropDownValue == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -180,6 +185,17 @@ class _DialogAddAccountState extends State<DialogAddAccount> {
                         balance: double.parse(_initialBalanceController.text),
                         userId: userLoged!.id!,
                       );
+                      final res = await AccountsManagerRepoImpl().createAccount(
+                        newAccount,
+                      );
+                      if (!res.success) {
+                        _showMessage(res.message);
+                        print(res.message);
+                      } else {
+                        _showMessage(res.message);
+                        accountProvider.getAccounts();
+                        _backPage();
+                      }
                     }
                   },
                 ),
@@ -189,5 +205,15 @@ class _DialogAddAccountState extends State<DialogAddAccount> {
         ),
       ),
     );
+  }
+
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(GlobalWidgets.snackMessage(context, message));
+  }
+
+  void _backPage() {
+    Navigator.pop(context);
   }
 }
