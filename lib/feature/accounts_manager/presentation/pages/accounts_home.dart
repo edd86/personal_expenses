@@ -15,7 +15,7 @@ class _AccountsHomeState extends State<AccountsHome> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final prov = Provider.of<ListAccountsProvider>(context);
+    Provider.of<ListAccountsProvider>(context).getAccounts();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
