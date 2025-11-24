@@ -74,10 +74,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_svg
-      sha256: b9c2ad5872518a27507ab432d1fb97e8813b05f0fc693f9d40fad06d073e0678
+      sha256: "87fbd7c534435b6c5d9d98b01e1fd527812b82e68ddd8bd35fc45ed0fa8f0a95"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.1"
+    version: "2.2.3"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -87,10 +87,10 @@ packages:
     dependency: transitive
     description:
       name: http
-      sha256: bb2ce4590bc2667c96f318d68cac1b5a7987ec819351d32b1c987239a815e007
+      sha256: "87721a4a50b19c7f1d49001e51409bddc46303966ce89a65af4f4e6004896412"
       url: "https://pub.dev"
     source: hosted
-    version: "1.5.0"
+    version: "1.6.0"
   http_parser:
     dependency: transitive
     description:
@@ -312,8 +312,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.6"
-<<<<<<< HEAD
-=======
   typed_data:
     dependency: transitive
     description:
@@ -346,7 +344,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.19"
->>>>>>> aedab3d951675de8e37a573e0e93b04f42c2e1d4
   vector_math:
     dependency: transitive
     description:
@@ -363,11 +360,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "15.0.2"
-<<<<<<< HEAD
-sdks:
-  dart: ">=3.9.0 <4.0.0"
-  flutter: ">=3.24.0"
-=======
   web:
     dependency: transitive
     description:
@@ -386,5 +378,4 @@ sdks:
     version: "6.6.1"
 sdks:
   dart: ">=3.9.0 <4.0.0"
-  flutter: ">=3.29.0"
->>>>>>> aedab3d951675de8e37a573e0e93b04f42c2e1d4
+  flutter: ">=3.32.0"
