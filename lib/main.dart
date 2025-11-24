@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:personal_expenses/core/constants/app_routes.dart';
 import 'package:personal_expenses/data/local/database_helper.dart';
 import 'package:personal_expenses/feature/accounts_manager/presentation/provider/list_accounts_provider.dart';
+import 'package:personal_expenses/feature/home/presentation/provider/resume_home_provider.dart';
 import 'package:personal_expenses/feature/login/presentation/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final db = await DatabaseHelper().database;
+  await DatabaseHelper().database;
 
   runApp(
     MultiProvider(
@@ -15,6 +16,9 @@ void main() async {
         ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
         ChangeNotifierProvider<ListAccountsProvider>(
           create: (_) => ListAccountsProvider(),
+        ),
+        ChangeNotifierProvider<ResumeHomeProvider>(
+          create: (_) => ResumeHomeProvider(),
         ),
       ],
       child: const MainApp(),
