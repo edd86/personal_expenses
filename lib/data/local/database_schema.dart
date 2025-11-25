@@ -19,7 +19,7 @@ const List<String> schemas = [
     isActive BOOLEAN DEFAULT 1,
     createdAt TEXT NOT NULL,
     updatedAt TEXT NOT NULL,
-    userId INTEGER,
+    userId INTEGER NOT NULL,
     FOREIGN KEY (userId) REFERENCES Users(id) ON DELETE CASCADE
   )''',
   ''' CREATE TABLE Categories(
@@ -27,7 +27,7 @@ const List<String> schemas = [
     name TEXT NOT NULL,
     categoryType TEXT NOT NULL CHECK(categoryType IN ('expense','income')),
     color TEXT DEFAULT 'FF14b6eb',
-    icon TEXT DEFAULT 'other',
+    icon TEXT NOT NULL,
     isActive BOOLEAN DEFAULT 1,
     createdAt TEXT NOT NULL,
     updatedAt TEXT NOT NULL,
